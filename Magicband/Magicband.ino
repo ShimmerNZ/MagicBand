@@ -10,14 +10,15 @@
 #include <Adafruit_NeoPixel.h>
 #include "SoftwareSerial.h"
 #include "DFRobotDFPlayerMini.h"
-#include <SPI.h>
 #include <MFRC522.h>
-#include <RF433.h>
+#include <RH_ASK.h>
+#include <SPI.h>
 
-
+RH_ASK driver(2000,4,7,5,false);   // change the library default from tx pin 12 to pin 7. RX=4 PTT=5
 static const uint8_t PIN_MP3_TX = 2; // Connects to DFPlayer module's RX
 static const uint8_t PIN_MP3_RX = 3; // Connects to DFPlayer module's TX
 #define DONEPIN 6  //Pin to Power Down TPL5110 
+#define RF_DATA_PIN 7 //433mhz Transmitter
 #define PIN     8  //LED WS2812b Data Pin
 #define RSTPIN  9  //RFID
 #define SDAPIN 10 //RFID
@@ -38,6 +39,7 @@ void setup() {
   pinMode(DONEPIN, OUTPUT);
   digitalWrite(DONEPIN, LOW);
   softwareSerial.begin(9600);
+  driver.init();
   strip.begin();
   strip.show();
 }
@@ -45,6 +47,9 @@ void setup() {
 void loop() {
   strip.clear();
   int RandNumber = random(2);
+  const char *msg = "Doorbell"; //Doorbell transmission
+  driver.send((uint8_t *)msg, strlen(msg));
+  driver.waitPacketSent();
   switch(RandNumber)
   {
     case 2:  chase(strip.Color(0, 255, 0)); // Green
