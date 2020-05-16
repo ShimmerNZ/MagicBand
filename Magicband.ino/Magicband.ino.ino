@@ -1,8 +1,9 @@
 //Boards
 //Arduino nano 5v (but will run down to 2.8 so Lipo ok to power via 5v rail
 //TPL5110 5v (but runs on lipo)
-//433mhz Transmitter 3v rail <-- not yet implemented in code
-//RFID Reader 3v rail <--- not yet implemented in code
+//433mhz Transmitter 3v rail
+//RFID Reader 3v rail
+//DFPlayer 3.2-5 (let's take the 5v rail)
 //Batteries 2 x 18650 in parallel for long life
 
 
@@ -12,7 +13,8 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-
+static const uint8_t PIN_MP3_TX = 2; // Connects to DFPlayer module's RX
+static const uint8_t PIN_MP3_RX = 3; // Connects to DFPlayer module's TX
 #define DONEPIN 6  //Pin to Power Down TPL5110 
 #define PIN     8  //LED WS2812b Data Pin
 #define RSTPIN  9  //RFID
@@ -23,9 +25,7 @@
 
 #define N_LEDS 37  //Number of WS2812 LED's
 
-// Use pins 2 and 3 to communicate with DFPlayer Mini
-static const uint8_t PIN_MP3_TX = 2; // Connects to module's RX
-static const uint8_t PIN_MP3_RX = 3; // Connects to module's TX
+
 SoftwareSerial softwareSerial(PIN_MP3_RX, PIN_MP3_TX);
 DFRobotDFPlayerMini player;
 
