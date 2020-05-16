@@ -7,3 +7,10 @@ The idea was to produce a doorbell that looked similar to the Disney MagicBand r
 
 Video of it while in build mode.
 https://www.youtube.com/watch?v=pBCrjpx0mSs
+
+Arduino nano 5v (but will run down to 2.8 so Lipo ok to power via 5v rail
+TPL5110 5v (but runs on lipo)
+433mhz Transmitter 3v rail
+RFID Reader 3v rail
+DFPlayer 3.2-5 (let's take the 5v rail)
+Batteries 2 x 18650 in parallel for long life
