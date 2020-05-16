@@ -19,23 +19,25 @@ Batteries 2 x 18650 in parallel for long life
 
 Pin Out
 TPL5110 (5v)
-	POWEROFF	6
+	POWEROFF	6 - Yellow
 
 WS2812b LED (5v)
-	DATA		8
+	DATA		8 - Orange
 
 DFPlayer (5v)
-	RX		2
-	TX		3
+	RX		2 - Yellow
+	TX		3 - Orange
 
 433mhz Transmitter (3v)
 	RX		4
-	TX		7
+	TX		7 - Blue
 	PPT		5
 
 RFID (3v)
-	RST   		9
-	SDA  		10
-	MOSI 		11
-	MISO 		12
-	SCK 		13
+	RST   		9  - Green
+	SDA  		10 - Blue
+	MOSI 		11 - White
+	MISO 		12 - Yellow
+	SCK 		13 - Orange
+
+I had problems with the TPL5110 whereby when you pressed the button it would rapidly blink, this was resolved after placing a 22uf cap across the VIN/DRV pins

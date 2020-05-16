@@ -17,7 +17,7 @@
 RH_ASK driver(2000,4,7,5,false);   // change the library default from tx pin 12 to pin 7. RX=4 PTT=5
 static const uint8_t PIN_MP3_TX = 2; // Connects to DFPlayer module's RX
 static const uint8_t PIN_MP3_RX = 3; // Connects to DFPlayer module's TX
-#define DONEPIN 6  //Pin to Power Down TPL5110 
+#define DONEPIN 6  //Pin to Power Down TPL5110  pin 6
 #define RF_DATA_PIN 7 //433mhz Transmitter
 #define PIN     8  //LED WS2812b Data Pin
 #define RSTPIN  9  //RFID
@@ -60,22 +60,19 @@ void loop() {
              break;
   }
   if (player.begin(softwareSerial)) {
-    Serial.println("OK");
-
     // Set volume to maximum (0 to 30).
     player.volume(30);
     // Play the first MP3 file on the SD card
     player.play(1);
-
-  } else {
-    Serial.println("Connecting to DFPlayer Mini failed!");
   }
   delay(400);
   brighten();
   darken();
   strip.clear();
+  Serial.println("LED OFF");
   delay(5000);
   digitalWrite(DONEPIN, HIGH);
+  Serial.println("PIN DONE");
   delay(10);
   digitalWrite(DONEPIN, LOW);
 }
