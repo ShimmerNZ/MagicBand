@@ -10,7 +10,7 @@
 #include <Adafruit_NeoPixel.h>
 #include "SoftwareSerial.h"
 #include "DFRobotDFPlayerMini.h"
-#include <MFRC522.h>
+#include "MFRC522.h"
 #include <RH_ASK.h>
 #include <SPI.h>
 
@@ -25,6 +25,10 @@ static const uint8_t PIN_MP3_RX = 3; // Connects to DFPlayer module's TX
 #define MOSIPIN 11 //RFID
 #define MISOPIN 12 //RFID
 #define SCKPIN 13 //RFID
+bool RFIDON = false; // set the rfid to false for oneshot button to work
+
+MFRC522 mfrc522(SDAPIN, RSTPIN);  // Create MFRC522 instance
+
 
 #define N_LEDS 37  //Number of WS2812 LED's
 
@@ -42,10 +46,74 @@ void setup() {
   driver.init();
   strip.begin();
   strip.show();
+  Serial.begin(9600);    // Initialize serial communications with the PC
+  while (!Serial);    // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
+  SPI.begin();      // Init SPI bus
+  Serial.println(F("Init"));
+  mfrc522.PCD_Init();   // Init MFRC522
+  delay(4);       // Optional delay. Some board do need more time after init to be ready, see Readme
+  mfrc522.PCD_DumpVersionToSerial();  // Show details of PCD - MFRC522 Card Reader details
+  Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks..."));
+ // mfrc522.PCD_SetAntennaGain(mfrc522.RxGain_max);
 }
  
 void loop() {
   strip.clear();
+  if (RFIDON == true) {
+       if ( ! mfrc522.PICC_IsNewCardPresent()) {
+       return;
+       }
+       if ( ! mfrc522.PICC_ReadCardSerial()) {
+       return;
+       }
+       String tag = "";
+       for (byte i = 0; i < mfrc522.uid.size; i++)
+       {
+       tag.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+       tag.concat(String(mfrc522.uid.uidByte[i], HEX));
+       }
+       tag.toUpperCase();
+       if (tag.substring(1) == "C9 FB 87 59") //change here the UID of the card/cards that you want to give access
+       {
+          // If UID of tag is matched.
+          chase(strip.Color(0, 0, 255));
+          if (player.begin(softwareSerial)) {
+              // Set volume to maximum (0 to 30).
+              player.volume(25);
+              // Play the first MP3 file on the SD card
+              player.play(1);
+          }
+       delay(400);
+       brighten();
+       darken();
+       strip.clear();
+       delay(1000);
+       digitalWrite(DONEPIN, HIGH);
+       delay(10);
+       digitalWrite(DONEPIN, LOW);
+       }
+       if (tag.substring(1) == "9E 13 64 31") //change here the UID of the card/cards that you want to give access
+       {
+        // If UID of tag is matched.
+       chase(strip.Color(255,255,255));
+          if (player.begin(softwareSerial)) {
+              // Set volume to maximum (0 to 30).
+              player.volume(25);
+              // Play the first MP3 file on the SD card
+              player.play(1);
+          }
+       delay(400);
+       brighten();
+       darken();
+       strip.clear();
+       delay(1000);
+       digitalWrite(DONEPIN, HIGH);
+       delay(10);
+       digitalWrite(DONEPIN, LOW);
+       }
+  }
+  if (RFIDON == false) {
+  Serial.println(F("Else Statement"));
   int RandNumber = random(2);
   const char *msg = "Doorbell"; //Doorbell transmission
   driver.send((uint8_t *)msg, strlen(msg));
@@ -59,9 +127,10 @@ void loop() {
     case 1:  chase(strip.Color(255,255,255)); // White
              break;
   }
+  Serial.println(F("Mp3 Start"));
   if (player.begin(softwareSerial)) {
     // Set volume to maximum (0 to 30).
-    player.volume(30);
+    player.volume(25);
     // Play the first MP3 file on the SD card
     player.play(1);
   }
@@ -70,11 +139,13 @@ void loop() {
   darken();
   strip.clear();
   Serial.println("LED OFF");
-  delay(5000);
+  delay(1000);
   digitalWrite(DONEPIN, HIGH);
   Serial.println("PIN DONE");
   delay(10);
   digitalWrite(DONEPIN, LOW);
+  RFIDON = true;
+  } v                            m
 }
  
 static void chase(uint32_t c) {
