@@ -41,3 +41,11 @@ RFID (3v)
 	SCK 		13 - Orange
 
 I had problems with the TPL5110 whereby when you pressed the button it would rapidly blink, this was resolved after placing a 22uf cap across the VIN/DRV pins
+
+Tag
+Card UID: C9 FB 87 59
+
+Card
+Card UID: 9E 13 64 31
+
+
