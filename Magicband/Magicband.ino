@@ -28,7 +28,7 @@ const unsigned int X10_A1_ON = 0x00;
 const unsigned int X10_A1_OFF = 0x20;
 const unsigned int X10_address = 5;       // this is Housecode. In my case 5 results in "D" house code
 unsigned int X10_data = X10_A1_ON;         // command. I have implemented only On/Off for unit code 1
-
+long randNumber;
 MFRC522 mfrc522(SDAPIN, RSTPIN);   // Create MFRC522 instance
 
 
@@ -45,6 +45,7 @@ void setup() {
    pinMode(DONEPIN, OUTPUT);
    digitalWrite(DONEPIN, LOW);
    softwareSerial.begin(9600);
+   randomSeed(analogRead(0));
    pinMode(RF_DATA_PIN, OUTPUT);
    digitalWrite(RF_DATA_PIN   , LOW);
    strip.begin();
@@ -119,14 +120,13 @@ void loop() {
    Serial.println(F("Else Statement"));
       X10_sendState(X10_data);
       Serial.println(F("433mhz Signal Sent"));
-   // - I change state each 60 seconds to see changes in Domoticz
    if(X10_data == X10_A1_ON)
       X10_data = X10_A1_OFF;
    else
       X10_data = X10_A1_ON;
-   } 
-   int RandNumber = random(2);
-   switch(RandNumber)
+   
+   randNumber = random(2);
+   switch(randNumber)
    {
       case 2:   chase(strip.Color(0, 255, 0)); // Green
                    break;
@@ -138,7 +138,7 @@ void loop() {
    Serial.println(F("Mp3 Start"));
    if (player.begin(softwareSerial)) {
       // Set volume to maximum (0 to 30).
-      player.volume(25);
+      player.volume(28);
       // Play the first MP3 file on the SD card
       player.play(1);
    }
@@ -153,7 +153,7 @@ void loop() {
    delay(10);
    digitalWrite(DONEPIN, LOW);
    RFIDON = true;
-
+} 
 
 // new stuff here
 

@@ -7,14 +7,18 @@ The idea was to produce a doorbell that looked similar to the Disney MagicBand r
 
 Video of it while in build mode.
 https://www.youtube.com/watch?v=pBCrjpx0mSs
+https://www.youtube.com/watch?v=BiTqXcxttCY
 
 Components
 Arduino nano 5v (but will run down to 2.8 so Lipo ok to power via 5v rail
-TPL5110 5v (but runs on lipo)
+*TPL5110 5v (but runs on lipo)
 433mhz Transmitter 3v rail
 RFID Reader 3v rail
 DFPlayer 3.2-5 (let's take the 5v rail)
 Batteries 2 x 18650 in parallel for long life
+
+subsequent to the build video's I've replaced the TPL5110 with an adafruit Power button https://www.adafruit.com/product/1400
+This was a straight swap, had a bigger button area and removed the need of a rather sketchy desoldering of one of the TPLl5110 legs (pin 6), isolating from vcc and connecting to ground in order to get it to work in 'One Shot' mode. Similar power consumption in standby of only 0.5uA so long life for battery.This does sit higher so dremeled the plastic to fit else when screwed together it would have been continually pressed. You may want to consider modifying the stl files if using this instead as it's 4mm higher
 
 
 Pin Out
@@ -40,12 +44,8 @@ RFID (3v)
 	MISO 		12 - Yellow
 	SCK 		13 - Orange
 
-I had problems with the TPL5110 whereby when you pressed the button it would rapidly blink, this was resolved after placing a 22uf cap across the VIN/DRV pins
+I had problems with the TPL5110 whereby when you pressed the button it would rapidly blink, this was resolved after placing a 22uf cap across the VIN/DRV pins. (Not required if replacing with the adafruit power button mentioned earlier)
 
-Tag
-Card UID: C9 FB 87 59
 
-Card
-Card UID: 9E 13 64 31
 
 
