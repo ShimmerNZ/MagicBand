@@ -47,5 +47,12 @@ RFID (3v)
 I had problems with the TPL5110 whereby when you pressed the button it would rapidly blink, this was resolved after placing a 22uf cap across the VIN/DRV pins. (Not required if replacing with the adafruit power button mentioned earlier)
 
 
+usbasp
+368old bootloader
+ch340 driver for non fdti chip knock off
 
+this one works
+https://www.aliexpress.com/item/33020752786.html
 
+this one doesn't
+https://www.aliexpress.com/item/32899642573.html
