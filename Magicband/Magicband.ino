@@ -77,13 +77,14 @@ void loop() {
           tag.concat(String(mfrc522.uid.uidByte[i], HEX));
           }
           tag.toUpperCase();
-          if (tag.substring(1) == "C9 FB 87 59") //change here the UID of the card/cards that you want to give access
+          if (tag.substring(1) == "04 70 35 C2 A1 55 80") //change here the UID of the card/cards that you want to give access
           {
                // If UID of tag is matched.
+               Serial.println(F("Magicband 1 read and action started"));
                chase(strip.Color(0, 0, 255));
                if (player.begin(softwareSerial)) {
                      // Set volume to maximum (0 to 30).
-                     player.volume(25);
+                     player.volume(20);
                      // Play the first MP3 file on the SD card
                      player.play(1);
                }
@@ -96,13 +97,14 @@ void loop() {
           delay(10);
           digitalWrite(DONEPIN, LOW);
           }
-          if (tag.substring(1) == "9E 13 64 31") //change here the UID of the card/cards that you want to give access
+          if (tag.substring(1) == "04 7B 70 1A 2D 56 80") //change here the UID of the card/cards that you want to give access
           {
             // If UID of tag is matched.
+                           Serial.println(F("Magicband 2 read and action started"));
           chase(strip.Color(255,255,255));
                if (player.begin(softwareSerial)) {
                      // Set volume to maximum (0 to 30).
-                     player.volume(25);
+                     player.volume(20);
                      // Play the first MP3 file on the SD card
                      player.play(1);
                }
@@ -138,7 +140,7 @@ void loop() {
    Serial.println(F("Mp3 Start"));
    if (player.begin(softwareSerial)) {
       // Set volume to maximum (0 to 30).
-      player.volume(28);
+      player.volume(20);
       // Play the first MP3 file on the SD card
       player.play(1);
    }
